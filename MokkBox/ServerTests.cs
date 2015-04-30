@@ -1,12 +1,11 @@
-﻿namespace MokkBox
+using System;
+using Moq;
+using NUnit.Framework;
+
+namespace MokkBox
 {
-    using System;
-
-    using Moq;
-    using NUnit.Framework;
-
     // Using explicit types and no vars for clearity
-    public class Tests
+    public class ServerTests
     {
         [Test]
         public void CallMethodNoSetupReturnsDefault()
@@ -20,7 +19,7 @@
         {
             Mock<IServer> serverMock = new Mock<IServer>();
             serverMock.Setup(x => x.Login("meh"))
-                      .Returns("yeah");
+                .Returns("yeah");
 
             IServer server = serverMock.Object;
             var actual = server.Login("meh");
@@ -35,7 +34,7 @@
         {
             Mock<IServer> serverMock = new Mock<IServer>();
             serverMock.Setup(x => x.Login("meh"))
-                       .Throws<ArgumentException>();
+                .Throws<ArgumentException>();
             IServer server = serverMock.Object;
             Assert.Throws<ArgumentException>(() => server.Login("meh"));
         }
@@ -63,12 +62,5 @@
             IServer server = serverMock.Object; // three lines are the same as Mock.Of<IServer>(x => x.SomeValue == 2);
             Assert.AreEqual(2, server.SomeValue);
         }
-    }
-
-    public interface IServer
-    {
-        int SomeValue { get; }
-
-        string Login(string token);
     }
 }
